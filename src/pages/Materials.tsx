@@ -3,9 +3,12 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { useMaterials } from "@/hooks/useMaterials";
 import { MaterialsList } from "@/components/MaterialsList";
+import { CreateMaterialModal } from "@/components/CreateMaterialModal";
+import { useState } from "react";
 
 const MaterialsPage = () => {
   const { data: materials = [], isLoading } = useMaterials();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -19,12 +22,17 @@ const MaterialsPage = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Materiais</h1>
-        <Button>
+        <Button onClick={() => setIsCreateModalOpen(true)}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Novo Material
         </Button>
       </div>
       <MaterialsList materials={materials} />
+      
+      <CreateMaterialModal 
+        open={isCreateModalOpen} 
+        onOpenChange={setIsCreateModalOpen} 
+      />
     </div>
   );
 };
