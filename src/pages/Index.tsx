@@ -1,14 +1,15 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, Box, AlertTriangle } from "lucide-react";
 import { useMaterials } from "@/hooks/useMaterials";
 import { useProducts } from "@/hooks/useProducts";
 import { useAlerts } from "@/hooks/useAlerts";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { data: materials = [] } = useMaterials();
   const { data: products = [] } = useProducts();
   const { data: alerts = [] } = useAlerts();
+  const navigate = useNavigate();
 
   const lowStockMaterials = materials.filter(
     material => material.current_stock <= material.minimum_stock
@@ -18,7 +19,10 @@ const Dashboard = () => {
     <div>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onClick={() => navigate('/products')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total de Produtos
@@ -32,7 +36,10 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onClick={() => navigate('/materials')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total de Materiais
@@ -46,7 +53,10 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onClick={() => navigate('/materials')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Alertas de Estoque</CardTitle>
             <AlertTriangle className="h-4 w-4 text-destructive" />
