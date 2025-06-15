@@ -1,6 +1,10 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
+
+type MaterialRow = Database['public']['Tables']['materials']['Row'];
+type MaterialInsert = Database['public']['Tables']['materials']['Insert'];
 
 export interface Material {
   id: string;
@@ -34,7 +38,7 @@ export const useCreateMaterial = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (material: Omit<Material, 'id' | 'created_at' | 'updated_at'>) => {
+    mutationFn: async (material: MaterialInsert) => {
       const { data, error } = await supabase
         .from('materials')
         .insert([material])
