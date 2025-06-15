@@ -49,7 +49,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
-                    variant={location.pathname === item.href ? "primary" : "ghost"}
+                    variant={location.pathname === item.href ? "default" : "outline"}
                   >
                     <Link to={item.href}>
                       <item.icon className="h-4 w-4" />
