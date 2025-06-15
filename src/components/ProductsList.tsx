@@ -1,14 +1,25 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Package } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Package, Settings } from "lucide-react";
 import { Product } from "@/hooks/useProducts";
+import { ProductionModal } from "@/components/ProductionModal";
+import { useState } from "react";
 
 interface ProductsListProps {
   products: Product[];
 }
 
 export function ProductsList({ products }: ProductsListProps) {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isProductionModalOpen, setIsProductionModalOpen] = useState(false);
+
+  const handleProduceClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsProductionModalOpen(true);
+  };
+
   if (products.length === 0) {
     return (
       <div className="p-8 border-2 border-dashed border-border rounded-lg text-center">
@@ -22,32 +33,51 @@ export function ProductsList({ products }: ProductsListProps) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {products.map((product) => (
-        <Card key={product.id}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">{product.name}</CardTitle>
-              <Badge variant={product.status === 'ativo' ? 'default' : 'secondary'}>
-                {product.status}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-2">{product.description}</p>
-            {product.category && (
-              <Badge variant="outline" className="mb-2">
-                {product.category}
-              </Badge>
-            )}
-            {product.estimated_cost && (
-              <p className="text-sm font-medium">
-                Custo estimado: R$ {product.estimated_cost.toFixed(2)}
-              </p>
-            )}
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+    <>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {products.map((product) => (
+          <Card key={product.id}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">{product.name}</CardTitle>
+                <Badge variant={product.status === 'ativo' ? 'default' : 'secondary'}>
+                  {product.status}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-2">{product.description}</p>
+              {product.category && (
+                <Badge variant="outline" className="mb-2">
+                  {product.category}
+                </Badge>
+              )}
+              {product.estimated_cost && (
+                <p className="text-sm font-medium mb-3">
+                  Custo estimado: R$ {product.estimated_cost.toFixed(2)}
+                </p>
+              )}
+              
+              <div className="flex gap-2">
+                <Button 
+                  size="sm" 
+                  onClick={() => handleProduceClick(product)}
+                  disabled={product.status !== 'ativo'}
+                >
+                  <Settings className="h-4 w-4 mr-1" />
+                  Produzir
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <ProductionModal
+        open={isProductionModalOpen}
+        onOpenChange={setIsProductionModalOpen}
+        product={selectedProduct}
+      />
+    </>
   );
 }
