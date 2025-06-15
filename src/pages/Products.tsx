@@ -1,8 +1,20 @@
 
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useProducts } from "@/hooks/useProducts";
+import { ProductsList } from "@/components/ProductsList";
 
 const ProductsPage = () => {
+  const { data: products = [], isLoading } = useProducts();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-lg">Carregando produtos...</div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -12,15 +24,9 @@ const ProductsPage = () => {
           Novo Produto
         </Button>
       </div>
-      <div className="p-8 border-2 border-dashed border-border rounded-lg text-center">
-        <h2 className="text-xl font-semibold">Nenhum produto cadastrado</h2>
-        <p className="text-muted-foreground mt-2">
-          Comece cadastrando um novo produto para sua empresa.
-        </p>
-      </div>
+      <ProductsList products={products} />
     </div>
   );
 };
 
 export default ProductsPage;
-

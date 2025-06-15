@@ -9,7 +9,202 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          id: string
+          is_read: boolean
+          material_id: string
+          message: string
+        }
+        Insert: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          material_id: string
+          message: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          material_id?: string
+          message?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      materials: {
+        Row: {
+          created_at: string
+          current_stock: number
+          description: string | null
+          id: string
+          minimum_stock: number
+          name: string
+          supplier: string | null
+          unit: Database["public"]["Enums"]["unit_type"]
+          unit_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_stock?: number
+          description?: string | null
+          id?: string
+          minimum_stock?: number
+          name: string
+          supplier?: string | null
+          unit?: Database["public"]["Enums"]["unit_type"]
+          unit_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_stock?: number
+          description?: string | null
+          id?: string
+          minimum_stock?: number
+          name?: string
+          supplier?: string | null
+          unit?: Database["public"]["Enums"]["unit_type"]
+          unit_price?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      product_materials: {
+        Row: {
+          created_at: string
+          id: string
+          material_id: string
+          product_id: string
+          quantity: number
+          unit: Database["public"]["Enums"]["unit_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          material_id: string
+          product_id: string
+          quantity: number
+          unit: Database["public"]["Enums"]["unit_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          material_id?: string
+          product_id?: string
+          quantity?: number
+          unit?: Database["public"]["Enums"]["unit_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_materials_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_materials_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          estimated_cost: number | null
+          id: string
+          image_url: string | null
+          name: string
+          status: Database["public"]["Enums"]["product_status"]
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_cost?: number | null
+          id?: string
+          image_url?: string | null
+          name: string
+          status?: Database["public"]["Enums"]["product_status"]
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_cost?: number | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          status?: Database["public"]["Enums"]["product_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      stock_movements: {
+        Row: {
+          created_at: string
+          id: string
+          material_id: string
+          movement_type: Database["public"]["Enums"]["movement_type"]
+          new_stock: number
+          notes: string | null
+          previous_stock: number
+          quantity: number
+          reference_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          material_id: string
+          movement_type: Database["public"]["Enums"]["movement_type"]
+          new_stock: number
+          notes?: string | null
+          previous_stock: number
+          quantity: number
+          reference_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          material_id?: string
+          movement_type?: Database["public"]["Enums"]["movement_type"]
+          new_stock?: number
+          notes?: string | null
+          previous_stock?: number
+          quantity?: number
+          reference_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +213,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      movement_type: "entrada" | "saida" | "ajuste" | "producao"
+      product_status: "ativo" | "inativo"
+      unit_type:
+        | "metros"
+        | "quilogramas"
+        | "litros"
+        | "unidades"
+        | "gramas"
+        | "centimetros"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +336,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      movement_type: ["entrada", "saida", "ajuste", "producao"],
+      product_status: ["ativo", "inativo"],
+      unit_type: [
+        "metros",
+        "quilogramas",
+        "litros",
+        "unidades",
+        "gramas",
+        "centimetros",
+      ],
+    },
   },
 } as const

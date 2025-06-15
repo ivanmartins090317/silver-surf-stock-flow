@@ -1,8 +1,20 @@
 
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useMaterials } from "@/hooks/useMaterials";
+import { MaterialsList } from "@/components/MaterialsList";
 
 const MaterialsPage = () => {
+  const { data: materials = [], isLoading } = useMaterials();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-lg">Carregando materiais...</div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -12,12 +24,7 @@ const MaterialsPage = () => {
           Novo Material
         </Button>
       </div>
-      <div className="p-8 border-2 border-dashed border-border rounded-lg text-center">
-        <h2 className="text-xl font-semibold">Nenhum material cadastrado</h2>
-        <p className="text-muted-foreground mt-2">
-          Adicione as matérias-primas utilizadas na sua produção.
-        </p>
-      </div>
+      <MaterialsList materials={materials} />
     </div>
   );
 };
