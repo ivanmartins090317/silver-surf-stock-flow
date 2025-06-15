@@ -60,18 +60,19 @@ export function ProductionModal({ open, onOpenChange, product }: ProductionModal
         return;
       }
 
-      // Criar ordem de produção
-      const { error: orderError } = await supabase
-        .from('production_orders')
-        .insert({
+      // Atualizar estoque do produto após produção bem-sucedida
+      const { error: stockError } = await supabase
+        .from('product_stock')
+        .upsert({
           product_id: product.id,
-          quantity: quantity,
-          status: 'completed',
-          notes: notes,
-          completed_at: new Date().toISOString()
+          current_stock: (product.current_stock || 0) + quantity
+        }, {
+          onConflict: 'product_id'
         });
 
-      if (orderError) throw orderError;
+      if (stockError) {
+        console.error('Erro ao atualizar estoque do produto:', stockError);
+      }
 
       toast({
         title: "Produção realizada com sucesso!",

@@ -16,6 +16,7 @@ export interface Product {
   estimated_cost?: number;
   created_at: string;
   updated_at: string;
+  current_stock?: number;
 }
 
 export const useProducts = () => {
@@ -24,11 +25,20 @@ export const useProducts = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
-        .select('*')
+        .select(`
+          *,
+          product_stock (
+            current_stock
+          )
+        `)
         .order('name');
       
       if (error) throw error;
-      return data as Product[];
+      
+      return data.map(product => ({
+        ...product,
+        current_stock: product.product_stock?.[0]?.current_stock || 0
+      })) as Product[];
     },
   });
 };

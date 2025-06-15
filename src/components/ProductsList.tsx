@@ -41,7 +41,7 @@ export function ProductsList({ products }: ProductsListProps) {
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">{product.name}</CardTitle>
                 <Badge variant={product.status === 'ativo' ? 'default' : 'secondary'}>
-                  {product.status}
+                  {product.status} ({product.current_stock || 0})
                 </Badge>
               </div>
             </CardHeader>

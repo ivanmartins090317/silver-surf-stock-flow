@@ -63,6 +63,18 @@ export function CreateProductModal({ open, onOpenChange }: CreateProductModalPro
         if (materialsError) throw materialsError;
       }
 
+      // Criar registro de estoque inicial para o produto
+      const { error: stockError } = await supabase
+        .from('product_stock')
+        .insert({
+          product_id: productData.id,
+          current_stock: 0
+        });
+
+      if (stockError) {
+        console.error('Erro ao criar estoque do produto:', stockError);
+      }
+
       toast({
         title: "Produto criado com sucesso!",
         description: `${formData.name} foi adicionado aos produtos.`,
