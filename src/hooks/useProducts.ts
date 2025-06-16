@@ -23,22 +23,41 @@ export const useProducts = () => {
   return useQuery({
     queryKey: ['products'],
     queryFn: async () => {
+      console.log('Fetching products with stock...');
+      
       const { data, error } = await supabase
         .from('products')
         .select(`
           *,
-          product_stock (
+          product_stock!inner (
             current_stock
           )
         `)
         .order('name');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching products:', error);
+        throw error;
+      }
       
-      return data.map(product => ({
-        ...product,
-        current_stock: product.product_stock?.[0]?.current_stock || 0
-      })) as Product[];
+      console.log('Raw data from supabase:', data);
+      
+      const mappedProducts = data.map(product => {
+        const stockData = Array.isArray(product.product_stock) 
+          ? product.product_stock[0] 
+          : product.product_stock;
+        
+        const mappedProduct = {
+          ...product,
+          current_stock: stockData?.current_stock || 0
+        };
+        
+        console.log('Mapped product:', mappedProduct);
+        return mappedProduct;
+      }) as Product[];
+      
+      console.log('Final mapped products:', mappedProducts);
+      return mappedProducts;
     },
   });
 };
@@ -55,6 +74,19 @@ export const useCreateProduct = () => {
         .single();
       
       if (error) throw error;
+      
+      // Criar entrada inicial no estoque
+      const { error: stockError } = await supabase
+        .from('product_stock')
+        .insert({
+          product_id: data.id,
+          current_stock: 0
+        });
+      
+      if (stockError) {
+        console.error('Erro ao criar estoque inicial:', stockError);
+      }
+      
       return data;
     },
     onSuccess: () => {

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Product } from "@/hooks/useProducts";
 
@@ -20,6 +21,7 @@ export function ProductionModal({ open, onOpenChange, product }: ProductionModal
   const [notes, setNotes] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +31,8 @@ export function ProductionModal({ open, onOpenChange, product }: ProductionModal
     setIsProcessing(true);
     
     try {
+      console.log('Processing production for product:', product.id, 'quantity:', quantity);
+      
       // Chamar a função de processamento de produção
       const { data, error } = await supabase.rpc('process_production', {
         p_product_id: product.id,
@@ -84,8 +88,9 @@ export function ProductionModal({ open, onOpenChange, product }: ProductionModal
       setNotes("");
       onOpenChange(false);
       
-      // Recarregar a página para atualizar os dados
-      window.location.reload();
+      // Invalidar queries para atualizar os dados
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      
     } catch (error) {
       console.error('Erro na produção:', error);
       toast({
