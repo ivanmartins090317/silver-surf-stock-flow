@@ -1,14 +1,19 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, Box, AlertTriangle } from "lucide-react";
+import { Package, Box, AlertTriangle, Users } from "lucide-react";
 import { useMaterials } from "@/hooks/useMaterials";
 import { useProducts } from "@/hooks/useProducts";
 import { useAlerts } from "@/hooks/useAlerts";
+import { useRecentClients } from "@/hooks/useClients";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 const Dashboard = () => {
   const { data: materials = [] } = useMaterials();
   const { data: products = [] } = useProducts();
   const { data: alerts = [] } = useAlerts();
+  const { data: recentClients = [] } = useRecentClients();
   const navigate = useNavigate();
 
   const lowStockMaterials = materials.filter(
@@ -18,7 +23,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card 
           className="cursor-pointer hover:shadow-lg transition-shadow"
           onClick={() => navigate('/products')}
@@ -36,6 +41,7 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+        
         <Card 
           className="cursor-pointer hover:shadow-lg transition-shadow"
           onClick={() => navigate('/materials')}
@@ -53,6 +59,25 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+        
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onClick={() => navigate('/clients')}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total de Clientes
+            </CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{recentClients.length}</div>
+            <p className="text-xs text-muted-foreground">
+              Clientes cadastrados
+            </p>
+          </CardContent>
+        </Card>
+        
         <Card 
           className="cursor-pointer hover:shadow-lg transition-shadow"
           onClick={() => navigate('/materials')}
@@ -70,8 +95,46 @@ const Dashboard = () => {
         </Card>
       </div>
       
-      {(alerts.length > 0 || lowStockMaterials.length > 0) && (
-        <div className="mt-6">
+      <div className="grid gap-6 md:grid-cols-2 mt-6">
+        {/* Clientes Recentes */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Clientes Recentes</h2>
+          <div className="space-y-3">
+            {recentClients.slice(0, 5).map((client) => (
+              <Card key={client.id} className="border-l-4 border-l-blue-500">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium">{client.name}</p>
+                      <p className="text-sm text-muted-foreground">#{client.entry_number}</p>
+                      <p className="text-sm text-muted-foreground">{client.phone}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-muted-foreground">
+                        {format(new Date(client.created_at), "dd/MM/yyyy", { locale: ptBR })}
+                      </p>
+                      {client.price && (
+                        <p className="text-sm font-medium text-green-600">
+                          R$ {client.price.toFixed(2)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            {recentClients.length === 0 && (
+              <Card className="border-dashed">
+                <CardContent className="p-4 text-center text-muted-foreground">
+                  Nenhum cliente cadastrado ainda
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+
+        {/* Alertas */}
+        <div>
           <h2 className="text-xl font-semibold mb-4">Alertas Recentes</h2>
           <div className="space-y-3">
             {alerts.slice(0, 5).map((alert) => (
@@ -94,9 +157,16 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             ))}
+            {alerts.length === 0 && lowStockMaterials.length === 0 && (
+              <Card className="border-dashed">
+                <CardContent className="p-4 text-center text-muted-foreground">
+                  Nenhum alerta no momento
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

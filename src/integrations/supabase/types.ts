@@ -44,6 +44,75 @@ export type Database = {
           },
         ]
       }
+      clients: {
+        Row: {
+          address: string
+          apartment: string | null
+          birth_date: string
+          city: string
+          cpf: string
+          created_at: string
+          email: string
+          entry_date: string
+          entry_number: number
+          house_number: string
+          id: string
+          name: string
+          observations: string | null
+          order_image_url: string | null
+          order_specification: string | null
+          payment_method: string | null
+          phone: string
+          price: number | null
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          apartment?: string | null
+          birth_date: string
+          city: string
+          cpf: string
+          created_at?: string
+          email: string
+          entry_date?: string
+          entry_number?: number
+          house_number: string
+          id?: string
+          name: string
+          observations?: string | null
+          order_image_url?: string | null
+          order_specification?: string | null
+          payment_method?: string | null
+          phone: string
+          price?: number | null
+          state: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          apartment?: string | null
+          birth_date?: string
+          city?: string
+          cpf?: string
+          created_at?: string
+          email?: string
+          entry_date?: string
+          entry_number?: number
+          house_number?: string
+          id?: string
+          name?: string
+          observations?: string | null
+          order_image_url?: string | null
+          order_specification?: string | null
+          payment_method?: string | null
+          phone?: string
+          price?: number | null
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       materials: {
         Row: {
           created_at: string
