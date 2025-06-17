@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,6 +29,8 @@ import {
 } from "@/components/ui/select";
 import { useUpdateClient, Client } from "@/hooks/useClients";
 import { useToast } from "@/hooks/use-toast";
+import { ProductSearch } from "@/components/ProductSearch";
+import { Product } from "@/hooks/useProducts";
 
 const clientSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -59,6 +60,7 @@ interface EditClientModalProps {
 
 export function EditClientModal({ open, onOpenChange, client }: EditClientModalProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const updateClient = useUpdateClient();
   const { toast } = useToast();
 
@@ -102,6 +104,14 @@ export function EditClientModal({ open, onOpenChange, client }: EditClientModalP
       });
     }
   }, [client, form]);
+
+  const handleProductSelect = (product: Product) => {
+    setSelectedProduct(product);
+    form.setValue("order_specification", product.name);
+    if (product.estimated_cost) {
+      form.setValue("price", product.estimated_cost);
+    }
+  };
 
   const onSubmit = async (data: ClientFormData) => {
     setIsLoading(true);
@@ -291,6 +301,23 @@ export function EditClientModal({ open, onOpenChange, client }: EditClientModalP
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Informações do Pedido</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <FormLabel>Buscar Produto</FormLabel>
+                  <ProductSearch onProductSelect={handleProductSelect} />
+                </div>
+
+                {selectedProduct && (
+                  <div className="p-4 border rounded-lg bg-muted/50">
+                    <h4 className="font-medium mb-2">Produto Selecionado:</h4>
+                    <p className="text-sm text-muted-foreground mb-2">{selectedProduct.name}</p>
+                    {selectedProduct.estimated_cost && (
+                      <p className="text-sm">Custo estimado: R$ {selectedProduct.estimated_cost.toFixed(2)}</p>
+                    )}
+                  </div>
+                )}
+              </div>
               
               <FormField
                 control={form.control}
