@@ -1,14 +1,26 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Box, AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Box, AlertTriangle, Edit, Trash2 } from "lucide-react";
 import { Material } from "@/hooks/useMaterials";
+import { useState } from "react";
 
 interface MaterialsListProps {
   materials: Material[];
 }
 
 export function MaterialsList({ materials }: MaterialsListProps) {
+  const handleEditClick = (material: Material) => {
+    // TODO: Implementar modal de edição
+    console.log('Editar material:', material);
+  };
+
+  const handleDeleteClick = (material: Material) => {
+    // TODO: Implementar confirmação e exclusão
+    console.log('Deletar material:', material);
+  };
+
   if (materials.length === 0) {
     return (
       <div className="p-8 border-2 border-dashed border-border rounded-lg text-center">
@@ -40,7 +52,7 @@ export function MaterialsList({ materials }: MaterialsListProps) {
             <CardContent>
               <p className="text-sm text-muted-foreground mb-3">{material.description}</p>
               
-              <div className="space-y-2">
+              <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
                   <span>Estoque atual:</span>
                   <span className={`font-medium ${isLowStock ? (isCritical ? "text-red-600" : "text-orange-600") : "text-green-600"}`}>
@@ -65,6 +77,26 @@ export function MaterialsList({ materials }: MaterialsListProps) {
                     <Badge variant="outline">{material.supplier}</Badge>
                   </div>
                 )}
+              </div>
+              
+              <div className="flex gap-2 flex-wrap">
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => handleEditClick(material)}
+                >
+                  <Edit className="h-4 w-4 mr-1" />
+                  Editar
+                </Button>
+                
+                <Button 
+                  size="sm" 
+                  variant="destructive"
+                  onClick={() => handleDeleteClick(material)}
+                >
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Deletar
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Package, Settings } from "lucide-react";
+import { Package, Settings, Edit, Trash2 } from "lucide-react";
 import { Product } from "@/hooks/useProducts";
 import { ProductionModal } from "@/components/ProductionModal";
 import { useState } from "react";
@@ -18,6 +18,16 @@ export function ProductsList({ products }: ProductsListProps) {
   const handleProduceClick = (product: Product) => {
     setSelectedProduct(product);
     setIsProductionModalOpen(true);
+  };
+
+  const handleEditClick = (product: Product) => {
+    // TODO: Implementar modal de edição
+    console.log('Editar produto:', product);
+  };
+
+  const handleDeleteClick = (product: Product) => {
+    // TODO: Implementar confirmação e exclusão
+    console.log('Deletar produto:', product);
   };
 
   console.log('Products received in ProductsList:', products);
@@ -63,7 +73,7 @@ export function ProductsList({ products }: ProductsListProps) {
                   </p>
                 )}
                 
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <Button 
                     size="sm" 
                     onClick={() => handleProduceClick(product)}
@@ -71,6 +81,24 @@ export function ProductsList({ products }: ProductsListProps) {
                   >
                     <Settings className="h-4 w-4 mr-1" />
                     Produzir
+                  </Button>
+                  
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    onClick={() => handleEditClick(product)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Editar
+                  </Button>
+                  
+                  <Button 
+                    size="sm" 
+                    variant="destructive"
+                    onClick={() => handleDeleteClick(product)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    Deletar
                   </Button>
                 </div>
               </CardContent>
