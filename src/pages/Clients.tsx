@@ -2,13 +2,21 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useClients } from "@/hooks/useClients";
+import { useClients, Client } from "@/hooks/useClients";
 import { ClientsList } from "@/components/ClientsList";
 import { CreateClientModal } from "@/components/CreateClientModal";
+import { EditClientModal } from "@/components/EditClientModal";
 
 const ClientsPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const { data: clients = [], isLoading, error } = useClients();
+
+  const handleEditClient = (client: Client) => {
+    setSelectedClient(client);
+    setIsEditModalOpen(true);
+  };
 
   if (isLoading) {
     return (
@@ -36,12 +44,20 @@ const ClientsPage = () => {
         </Button>
       </div>
 
-      <ClientsList clients={clients} />
+      <ClientsList clients={clients} onEditClient={handleEditClient} />
 
       <CreateClientModal
         open={isCreateModalOpen}
         onOpenChange={setIsCreateModalOpen}
       />
+
+      {selectedClient && (
+        <EditClientModal
+          open={isEditModalOpen}
+          onOpenChange={setIsEditModalOpen}
+          client={selectedClient}
+        />
+      )}
     </div>
   );
 };

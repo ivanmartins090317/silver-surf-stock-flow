@@ -1,17 +1,50 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Calendar, Phone, Mail, MapPin } from "lucide-react";
-import { Client } from "@/hooks/useClients";
+import { Button } from "@/components/ui/button";
+import { Users, Calendar, Phone, Mail, MapPin, Edit, Trash2 } from "lucide-react";
+import { Client, useDeleteClient } from "@/hooks/useClients";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface ClientsListProps {
   clients: Client[];
+  onEditClient?: (client: Client) => void;
 }
 
-export function ClientsList({ clients }: ClientsListProps) {
+export function ClientsList({ clients, onEditClient }: ClientsListProps) {
+  const deleteClient = useDeleteClient();
+  const { toast } = useToast();
+
   console.log('Clients received in ClientsList:', clients);
+
+  const handleDeleteClient = async (id: string, name: string) => {
+    try {
+      await deleteClient.mutateAsync(id);
+      toast({
+        title: "Cliente excluído",
+        description: `${name} foi removido do sistema.`,
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao excluir cliente",
+        description: "Tente novamente em alguns instantes.",
+      });
+    }
+  };
 
   if (clients.length === 0) {
     return (
@@ -35,7 +68,42 @@ export function ClientsList({ clients }: ClientsListProps) {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">{client.name}</CardTitle>
-                <Badge variant="outline">#{client.entry_number}</Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">#{client.entry_number}</Badge>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onEditClient?.(client)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Excluir Cliente</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Tem certeza que deseja excluir {client.name}? Esta ação não pode ser desfeita.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteClient(client.id, client.name)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Excluir
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-3">

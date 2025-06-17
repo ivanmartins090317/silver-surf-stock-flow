@@ -5,6 +5,7 @@ import { Database } from "@/integrations/supabase/types";
 
 type ClientRow = Database['public']['Tables']['clients']['Row'];
 type ClientInsert = Database['public']['Tables']['clients']['Insert'];
+type ClientUpdate = Database['public']['Tables']['clients']['Update'];
 
 export interface Client {
   id: string;
@@ -64,6 +65,45 @@ export const useCreateClient = () => {
       
       if (error) throw error;
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['clients'] });
+    },
+  });
+};
+
+export const useUpdateClient = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ id, ...client }: { id: string } & Partial<ClientUpdate>) => {
+      const { data, error } = await supabase
+        .from('clients')
+        .update(client)
+        .eq('id', id)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['clients'] });
+    },
+  });
+};
+
+export const useDeleteClient = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('clients')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clients'] });
