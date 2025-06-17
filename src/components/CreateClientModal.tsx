@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/select";
 import { useCreateClient } from "@/hooks/useClients";
 import { useToast } from "@/hooks/use-toast";
+import { ProductSearch } from "@/components/ProductSearch";
+import { Product } from "@/hooks/useProducts";
 
 const clientSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -58,6 +60,7 @@ interface CreateClientModalProps {
 
 export function CreateClientModal({ open, onOpenChange }: CreateClientModalProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const createClient = useCreateClient();
   const { toast } = useToast();
 
@@ -80,14 +83,36 @@ export function CreateClientModal({ open, onOpenChange }: CreateClientModalProps
     },
   });
 
+  const handleProductSelect = (product: Product) => {
+    setSelectedProduct(product);
+    form.setValue("order_specification", product.name);
+    if (product.estimated_cost) {
+      form.setValue("price", product.estimated_cost);
+    }
+  };
+
   const onSubmit = async (data: ClientFormData) => {
     setIsLoading(true);
     try {
-      await createClient.mutateAsync({
-        ...data,
+      const clientData = {
+        name: data.name,
+        address: data.address,
+        house_number: data.house_number,
+        apartment: data.apartment || null,
+        city: data.city,
+        state: data.state,
+        cpf: data.cpf,
+        birth_date: data.birth_date,
+        phone: data.phone,
+        email: data.email,
+        order_specification: data.order_specification || null,
+        order_image_url: data.order_image_url || null,
         price: data.price || null,
         payment_method: data.payment_method || null,
-      });
+        observations: data.observations || null,
+      };
+
+      await createClient.mutateAsync(clientData);
       
       toast({
         title: "Cliente cadastrado com sucesso!",
@@ -95,6 +120,7 @@ export function CreateClientModal({ open, onOpenChange }: CreateClientModalProps
       });
       
       form.reset();
+      setSelectedProduct(null);
       onOpenChange(false);
     } catch (error) {
       toast({
@@ -268,6 +294,23 @@ export function CreateClientModal({ open, onOpenChange }: CreateClientModalProps
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Informações do Pedido</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <FormLabel>Buscar Produto</FormLabel>
+                  <ProductSearch onProductSelect={handleProductSelect} />
+                </div>
+
+                {selectedProduct && (
+                  <div className="p-4 border rounded-lg bg-muted/50">
+                    <h4 className="font-medium mb-2">Produto Selecionado:</h4>
+                    <p className="text-sm text-muted-foreground mb-2">{selectedProduct.name}</p>
+                    {selectedProduct.estimated_cost && (
+                      <p className="text-sm">Custo estimado: R$ {selectedProduct.estimated_cost.toFixed(2)}</p>
+                    )}
+                  </div>
+                )}
+              </div>
               
               <FormField
                 control={form.control}
