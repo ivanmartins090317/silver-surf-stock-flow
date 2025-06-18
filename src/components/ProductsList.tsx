@@ -3,9 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Package, Settings, Edit, Trash2 } from "lucide-react";
-import { Product } from "@/hooks/useProducts";
+import { Product, useDeleteProduct } from "@/hooks/useProducts";
 import { ProductionModal } from "@/components/ProductionModal";
+import { EditProductModal } from "@/components/EditProductModal";
+import { DeleteConfirmationDialog } from "@/components/DeleteConfirmationDialog";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProductsListProps {
   products: Product[];
@@ -14,6 +17,12 @@ interface ProductsListProps {
 export function ProductsList({ products }: ProductsListProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isProductionModalOpen, setIsProductionModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  
+  const deleteProduct = useDeleteProduct();
+  const { toast } = useToast();
 
   const handleProduceClick = (product: Product) => {
     setSelectedProduct(product);
@@ -21,13 +30,33 @@ export function ProductsList({ products }: ProductsListProps) {
   };
 
   const handleEditClick = (product: Product) => {
-    // TODO: Implementar modal de edição
-    console.log('Editar produto:', product);
+    setSelectedProduct(product);
+    setIsEditModalOpen(true);
   };
 
   const handleDeleteClick = (product: Product) => {
-    // TODO: Implementar confirmação e exclusão
-    console.log('Deletar produto:', product);
+    setProductToDelete(product);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!productToDelete) return;
+    
+    try {
+      await deleteProduct.mutateAsync(productToDelete.id);
+      toast({
+        title: "Produto deletado com sucesso!",
+        description: `${productToDelete.name} foi removido.`,
+      });
+      setIsDeleteDialogOpen(false);
+      setProductToDelete(null);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao deletar produto",
+        description: "Ocorreu um erro ao tentar deletar o produto.",
+      });
+    }
   };
 
   console.log('Products received in ProductsList:', products);
@@ -111,6 +140,21 @@ export function ProductsList({ products }: ProductsListProps) {
         open={isProductionModalOpen}
         onOpenChange={setIsProductionModalOpen}
         product={selectedProduct}
+      />
+
+      <EditProductModal
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+        product={selectedProduct}
+      />
+
+      <DeleteConfirmationDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onConfirm={handleConfirmDelete}
+        title="Deletar Produto"
+        description={`Tem certeza que deseja deletar o produto "${productToDelete?.name}"? Esta ação não pode ser desfeita e também removerá o estoque associado.`}
+        isLoading={deleteProduct.isPending}
       />
     </>
   );

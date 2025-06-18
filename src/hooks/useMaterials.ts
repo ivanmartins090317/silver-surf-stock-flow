@@ -5,6 +5,7 @@ import { Database } from "@/integrations/supabase/types";
 
 type MaterialRow = Database['public']['Tables']['materials']['Row'];
 type MaterialInsert = Database['public']['Tables']['materials']['Insert'];
+type MaterialUpdate = Database['public']['Tables']['materials']['Update'];
 
 export interface Material {
   id: string;
@@ -47,6 +48,45 @@ export const useCreateMaterial = () => {
       
       if (error) throw error;
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['materials'] });
+    },
+  });
+};
+
+export const useUpdateMaterial = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ id, ...updates }: MaterialUpdate & { id: string }) => {
+      const { data, error } = await supabase
+        .from('materials')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['materials'] });
+    },
+  });
+};
+
+export const useDeleteMaterial = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('materials')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['materials'] });
