@@ -20,6 +20,10 @@ const Dashboard = () => {
     material => material.current_stock <= material.minimum_stock
   );
 
+  const handleClientClick = (clientId: string) => {
+    navigate(`/clients?highlight=${clientId}`);
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
@@ -101,7 +105,11 @@ const Dashboard = () => {
           <h2 className="text-xl font-semibold mb-4">Clientes Recentes</h2>
           <div className="space-y-3">
             {recentClients.slice(0, 5).map((client) => (
-              <Card key={client.id} className="border-l-4 border-l-blue-500">
+              <Card 
+                key={client.id} 
+                className="border-l-4 border-l-blue-500 cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => handleClientClick(client.id)}
+              >
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">
                     <div>
@@ -138,7 +146,11 @@ const Dashboard = () => {
           <h2 className="text-xl font-semibold mb-4">Alertas Recentes</h2>
           <div className="space-y-3">
             {alerts.slice(0, 5).map((alert) => (
-              <Card key={alert.id} className="border-l-4 border-l-orange-500">
+              <Card 
+                key={alert.id} 
+                className="border-l-4 border-l-orange-500 cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => navigate('/materials')}
+              >
                 <CardContent className="p-4">
                   <p className="text-sm text-orange-700">{alert.message}</p>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -148,7 +160,11 @@ const Dashboard = () => {
               </Card>
             ))}
             {lowStockMaterials.slice(0, 3).map((material) => (
-              <Card key={`low-${material.id}`} className="border-l-4 border-l-red-500">
+              <Card 
+                key={`low-${material.id}`} 
+                className="border-l-4 border-l-red-500 cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => navigate('/materials')}
+              >
                 <CardContent className="p-4">
                   <p className="text-sm text-red-700">
                     Material "{material.name}" com estoque baixo: {material.current_stock} {material.unit} 
