@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,21 +23,41 @@ import { useToast } from "@/hooks/use-toast";
 interface EditProductModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  product: Product;
+  product: Product | null;
 }
 
 export function EditProductModal({ open, onOpenChange, product }: EditProductModalProps) {
-  const [name, setName] = useState(product.name);
-  const [description, setDescription] = useState(product.description || "");
-  const [category, setCategory] = useState(product.category || "");
-  const [status, setStatus] = useState<"ativo" | "inativo">(product.status as "ativo" | "inativo");
-  const [estimatedCost, setEstimatedCost] = useState(product.estimated_cost?.toString() || "");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [status, setStatus] = useState<"ativo" | "inativo">("ativo");
+  const [estimatedCost, setEstimatedCost] = useState("");
 
   const updateProduct = useUpdateProduct();
   const { toast } = useToast();
 
+  // Update form fields when product changes
+  useEffect(() => {
+    if (product) {
+      setName(product.name);
+      setDescription(product.description || "");
+      setCategory(product.category || "");
+      setStatus(product.status as "ativo" | "inativo");
+      setEstimatedCost(product.estimated_cost?.toString() || "");
+    }
+  }, [product]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!product) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Nenhum produto selecionado para edição.",
+      });
+      return;
+    }
     
     try {
       await updateProduct.mutateAsync({
@@ -63,6 +83,11 @@ export function EditProductModal({ open, onOpenChange, product }: EditProductMod
       });
     }
   };
+
+  // Don't render the form if there's no product
+  if (!product) {
+    return null;
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
