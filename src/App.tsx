@@ -4,16 +4,17 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import Layout from "./components/Layout";
 import Index from "./pages/Index";
+import Clients from "./pages/Clients";
+import Materials from "./pages/Materials";
+import Products from "./pages/Products";
+import Accessories from "./pages/Accessories";
+import QRScan from "./pages/QRScan";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
-import ProductsPage from "./pages/Products";
-import MaterialsPage from "./pages/Materials";
-import AccessoriesPage from "./pages/Accessories";
-import ClientsPage from "./pages/Clients";
-import AuthPage from "./pages/Auth";
-import { Layout } from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -23,24 +24,24 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
+        <SidebarProvider>
           <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-            <Route element={
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/qr-scan/:accessoryId" element={<QRScan />} />
+            <Route path="/" element={
               <ProtectedRoute>
                 <Layout />
               </ProtectedRoute>
             }>
-              <Route path="/" element={<Index />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/materials" element={<MaterialsPage />} />
-              <Route path="/accessories" element={<AccessoriesPage />} />
-              <Route path="/clients" element={<ClientsPage />} />
+              <Route index element={<Index />} />
+              <Route path="clients" element={<Clients />} />
+              <Route path="materials" element={<Materials />} />
+              <Route path="products" element={<Products />} />
+              <Route path="accessories" element={<Accessories />} />
             </Route>
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AuthProvider>
+        </SidebarProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
