@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import Layout from "./components/Layout";
+import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import Clients from "./pages/Clients";
 import Materials from "./pages/Materials";
@@ -14,7 +14,7 @@ import Accessories from "./pages/Accessories";
 import QRScan from "./pages/QRScan";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
