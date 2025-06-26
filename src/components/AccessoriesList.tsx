@@ -81,7 +81,7 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
                   <div className="flex items-center gap-2">
                     {accessory.name}
                     {isLowStock(accessory) && (
-                      <AlertTriangle className="h-4 w-4 text-orange-500" title="Estoque baixo" />
+                      <AlertTriangle className="h-4 w-4 text-orange-500" />
                     )}
                   </div>
                 </TableCell>

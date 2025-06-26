@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Accessory, useUpdateAccessory } from "@/hooks/useAccessories";
+import { ImageUpload } from "@/components/ImageUpload";
 
 interface EditAccessoryModalProps {
   open: boolean;
@@ -267,15 +268,14 @@ export function EditAccessoryModal({ open, onOpenChange, accessory }: EditAccess
                 onChange={(e) => handleInputChange("warranty_info", e.target.value)}
               />
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="image_url">URL da Imagem</Label>
-              <Input
-                id="image_url"
-                value={formData.image_url}
-                onChange={(e) => handleInputChange("image_url", e.target.value)}
-              />
-            </div>
+          <div className="space-y-2">
+            <ImageUpload
+              onImageUpload={(url) => handleInputChange("image_url", url)}
+              currentImageUrl={formData.image_url}
+              label="Imagem do Acessório"
+            />
           </div>
 
           <div className="space-y-2">
