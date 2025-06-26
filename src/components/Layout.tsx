@@ -11,6 +11,8 @@ export function Layout() {
   const { signOut, user } = useAuth();
   const { toast } = useToast();
 
+  console.log('Layout - user:', user);
+
   const handleSignOut = async () => {
     const { error } = await signOut();
     if (error) {
