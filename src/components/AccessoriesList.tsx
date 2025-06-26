@@ -1,31 +1,31 @@
-import { useState } from "react";
+import {useState} from "react";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Edit, Trash2, AlertTriangle, QrCode, Grid, List } from "lucide-react";
-import { Accessory, useDeleteAccessory } from "@/hooks/useAccessories";
-import { DeleteConfirmationDialog } from "@/components/DeleteConfirmationDialog";
-import { EditAccessoryModal } from "@/components/EditAccessoryModal";
-import { QRCodeGenerator } from "@/components/QRCodeGenerator";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Edit, Trash2, AlertTriangle, QrCode, Grid, List} from "lucide-react";
+import {Accessory, useDeleteAccessory} from "@/hooks/useAccessories";
+import {DeleteConfirmationDialog} from "@/components/DeleteConfirmationDialog";
+import {EditAccessoryModal} from "@/components/EditAccessoryModal";
+import {QRCodeGenerator} from "@/components/QRCodeGenerator";
+import {format} from "date-fns";
+import {ptBR} from "date-fns/locale";
 
 interface AccessoriesListProps {
   accessories: Accessory[];
 }
 
-export function AccessoriesList({ accessories }: AccessoriesListProps) {
+export function AccessoriesList({accessories}: AccessoriesListProps) {
   const [editingAccessory, setEditingAccessory] = useState<Accessory | null>(null);
   const [deletingAccessory, setDeletingAccessory] = useState<Accessory | null>(null);
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
   const deleteAccessory = useDeleteAccessory();
 
   const handleDelete = async () => {
@@ -37,13 +37,16 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      disponivel: { label: "Disponível", variant: "default" as const },
-      reservado: { label: "Reservado", variant: "secondary" as const },
-      manutencao: { label: "Em Manutenção", variant: "destructive" as const },
-      indisponivel: { label: "Indisponível", variant: "outline" as const },
+      disponivel: {label: "Disponível", variant: "default" as const},
+      reservado: {label: "Reservado", variant: "secondary" as const},
+      manutencao: {label: "Em Manutenção", variant: "destructive" as const},
+      indisponivel: {label: "Indisponível", variant: "outline" as const}
     };
-    
-    const statusInfo = statusMap[status as keyof typeof statusMap] || { label: status, variant: "outline" as const };
+
+    const statusInfo = statusMap[status as keyof typeof statusMap] || {
+      label: status,
+      variant: "outline" as const
+    };
     return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
   };
 
@@ -60,8 +63,8 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
   }
 
   const renderTableView = () => (
-    <div className="rounded-md border">
-      <Table>
+    <div className="rounded-md border w-full overflow-x-auto">
+      <Table className="min-w-full">
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
@@ -92,13 +95,15 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
               <TableCell>
                 <div className="text-sm">
                   <div>Atual: {accessory.current_stock}</div>
-                  <div className="text-muted-foreground">Min: {accessory.minimum_stock}</div>
+                  <div className="text-muted-foreground">
+                    Min: {accessory.minimum_stock}
+                  </div>
                 </div>
               </TableCell>
               <TableCell>{getStatusBadge(accessory.status)}</TableCell>
               <TableCell>{accessory.stock_location || "-"}</TableCell>
               <TableCell>
-                {format(new Date(accessory.entry_date), "dd/MM/yyyy", { locale: ptBR })}
+                {format(new Date(accessory.entry_date), "dd/MM/yyyy", {locale: ptBR})}
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
@@ -156,14 +161,16 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
               </div>
               <div>
                 <p className="font-medium text-gray-600">Estoque:</p>
-                <p>{accessory.current_stock} / Min: {accessory.minimum_stock}</p>
+                <p>
+                  {accessory.current_stock} / Min: {accessory.minimum_stock}
+                </p>
               </div>
             </div>
-            
+
             {accessory.image_url && (
               <div className="flex justify-center">
-                <img 
-                  src={accessory.image_url} 
+                <img
+                  src={accessory.image_url}
                   alt={accessory.name}
                   className="w-24 h-24 object-cover rounded-lg border"
                 />
@@ -171,7 +178,7 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
             )}
 
             <div className="flex justify-center">
-              <QRCodeGenerator 
+              <QRCodeGenerator
                 accessoryId={accessory.id}
                 accessoryName={accessory.name}
                 size={120}
@@ -209,17 +216,17 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
       <div className="flex justify-end mb-4">
         <div className="flex items-center gap-2">
           <Button
-            variant={viewMode === 'table' ? 'default' : 'outline'}
+            variant={viewMode === "table" ? "default" : "outline"}
             size="sm"
-            onClick={() => setViewMode('table')}
+            onClick={() => setViewMode("table")}
           >
             <List className="h-4 w-4 mr-1" />
             Tabela
           </Button>
           <Button
-            variant={viewMode === 'cards' ? 'default' : 'outline'}
+            variant={viewMode === "cards" ? "default" : "outline"}
             size="sm"
-            onClick={() => setViewMode('cards')}
+            onClick={() => setViewMode("cards")}
           >
             <Grid className="h-4 w-4 mr-1" />
             Cards
@@ -227,7 +234,7 @@ export function AccessoriesList({ accessories }: AccessoriesListProps) {
         </div>
       </div>
 
-      {viewMode === 'table' ? renderTableView() : renderCardsView()}
+      {viewMode === "table" ? renderTableView() : renderCardsView()}
 
       <EditAccessoryModal
         open={!!editingAccessory}

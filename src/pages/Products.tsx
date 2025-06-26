@@ -1,13 +1,12 @@
-
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { useProducts } from "@/hooks/useProducts";
-import { ProductsList } from "@/components/ProductsList";
-import { CreateProductModal } from "@/components/CreateProductModal";
-import { useState } from "react";
+import {Button} from "@/components/ui/button";
+import {PlusCircle} from "lucide-react";
+import {useProducts} from "@/hooks/useProducts";
+import {ProductsList} from "@/components/ProductsList";
+import {CreateProductModal} from "@/components/CreateProductModal";
+import {useState} from "react";
 
 const ProductsPage = () => {
-  const { data: products = [], isLoading } = useProducts();
+  const {data: products = [], isLoading} = useProducts();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   if (isLoading) {
@@ -28,11 +27,8 @@ const ProductsPage = () => {
         </Button>
       </div>
       <ProductsList products={products} />
-      
-      <CreateProductModal 
-        open={isCreateModalOpen} 
-        onOpenChange={setIsCreateModalOpen} 
-      />
+
+      <CreateProductModal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
     </div>
   );
 };

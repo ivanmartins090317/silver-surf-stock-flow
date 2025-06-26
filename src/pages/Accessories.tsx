@@ -1,13 +1,12 @@
-
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { useAccessories } from "@/hooks/useAccessories";
-import { AccessoriesList } from "@/components/AccessoriesList";
-import { CreateAccessoryModal } from "@/components/CreateAccessoryModal";
-import { useState } from "react";
+import {Button} from "@/components/ui/button";
+import {PlusCircle} from "lucide-react";
+import {useAccessories} from "@/hooks/useAccessories";
+import {AccessoriesList} from "@/components/AccessoriesList";
+import {CreateAccessoryModal} from "@/components/CreateAccessoryModal";
+import {useState} from "react";
 
 const AccessoriesPage = () => {
-  const { data: accessories = [], isLoading } = useAccessories();
+  const {data: accessories = [], isLoading} = useAccessories();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   if (isLoading) {
@@ -28,10 +27,10 @@ const AccessoriesPage = () => {
         </Button>
       </div>
       <AccessoriesList accessories={accessories} />
-      
-      <CreateAccessoryModal 
-        open={isCreateModalOpen} 
-        onOpenChange={setIsCreateModalOpen} 
+
+      <CreateAccessoryModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
       />
     </div>
   );
