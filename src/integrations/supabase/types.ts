@@ -9,6 +9,128 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      accessories: {
+        Row: {
+          brand: string | null
+          category: string
+          cost_price: number | null
+          created_at: string
+          current_stock: number
+          description: string | null
+          entry_date: string
+          expiry_date: string | null
+          id: string
+          image_url: string | null
+          initial_quantity: number
+          minimum_stock: number
+          model: string | null
+          name: string
+          reference_code: string
+          sale_price: number | null
+          serial_number: string | null
+          status: string
+          stock_location: string | null
+          supplier: string | null
+          supplier_code: string | null
+          updated_at: string
+          warranty_info: string | null
+        }
+        Insert: {
+          brand?: string | null
+          category: string
+          cost_price?: number | null
+          created_at?: string
+          current_stock?: number
+          description?: string | null
+          entry_date?: string
+          expiry_date?: string | null
+          id?: string
+          image_url?: string | null
+          initial_quantity?: number
+          minimum_stock?: number
+          model?: string | null
+          name: string
+          reference_code: string
+          sale_price?: number | null
+          serial_number?: string | null
+          status?: string
+          stock_location?: string | null
+          supplier?: string | null
+          supplier_code?: string | null
+          updated_at?: string
+          warranty_info?: string | null
+        }
+        Update: {
+          brand?: string | null
+          category?: string
+          cost_price?: number | null
+          created_at?: string
+          current_stock?: number
+          description?: string | null
+          entry_date?: string
+          expiry_date?: string | null
+          id?: string
+          image_url?: string | null
+          initial_quantity?: number
+          minimum_stock?: number
+          model?: string | null
+          name?: string
+          reference_code?: string
+          sale_price?: number | null
+          serial_number?: string | null
+          status?: string
+          stock_location?: string | null
+          supplier?: string | null
+          supplier_code?: string | null
+          updated_at?: string
+          warranty_info?: string | null
+        }
+        Relationships: []
+      }
+      accessory_movements: {
+        Row: {
+          accessory_id: string
+          created_at: string
+          id: string
+          movement_type: string
+          new_stock: number
+          notes: string | null
+          previous_stock: number
+          quantity: number
+          reference_id: string | null
+        }
+        Insert: {
+          accessory_id: string
+          created_at?: string
+          id?: string
+          movement_type: string
+          new_stock: number
+          notes?: string | null
+          previous_stock: number
+          quantity: number
+          reference_id?: string | null
+        }
+        Update: {
+          accessory_id?: string
+          created_at?: string
+          id?: string
+          movement_type?: string
+          new_stock?: number
+          notes?: string | null
+          previous_stock?: number
+          quantity?: number
+          reference_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accessory_movements_accessory_id_fkey"
+            columns: ["accessory_id"]
+            isOneToOne: false
+            referencedRelation: "accessories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       alerts: {
         Row: {
           alert_type: string

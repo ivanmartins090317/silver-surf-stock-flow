@@ -11,7 +11,7 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, Box, Users } from "lucide-react";
+import { LayoutDashboard, Package, Box, Users, Shirt } from "lucide-react";
 import { Logo } from "./Logo";
 
 const menuItems = [
@@ -29,6 +29,11 @@ const menuItems = [
     href: "/materials",
     label: "Materiais",
     icon: Box,
+  },
+  {
+    href: "/accessories",
+    label: "Acessórios",
+    icon: Shirt,
   },
   {
     href: "/clients",

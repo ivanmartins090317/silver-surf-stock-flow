@@ -1,10 +1,11 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, Box, AlertTriangle, Users } from "lucide-react";
+import { Package, Box, AlertTriangle, Users, Shirt } from "lucide-react";
 import { useMaterials } from "@/hooks/useMaterials";
 import { useProducts } from "@/hooks/useProducts";
 import { useAlerts } from "@/hooks/useAlerts";
 import { useRecentClients } from "@/hooks/useClients";
+import { useAccessories } from "@/hooks/useAccessories";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -12,12 +13,17 @@ import { ptBR } from "date-fns/locale";
 const Dashboard = () => {
   const { data: materials = [] } = useMaterials();
   const { data: products = [] } = useProducts();
+  const { data: accessories = [] } = useAccessories();
   const { data: alerts = [] } = useAlerts();
   const { data: recentClients = [] } = useRecentClients();
   const navigate = useNavigate();
 
   const lowStockMaterials = materials.filter(
     material => material.current_stock <= material.minimum_stock
+  );
+
+  const lowStockAccessories = accessories.filter(
+    accessory => accessory.current_stock <= accessory.minimum_stock
   );
 
   const handleClientClick = (clientId: string) => {
@@ -27,7 +33,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <Card 
           className="cursor-pointer hover:shadow-lg transition-shadow"
           onClick={() => navigate('/products')}
@@ -63,6 +69,24 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onClick={() => navigate('/accessories')}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total de Acessórios
+            </CardTitle>
+            <Shirt className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{accessories.length}</div>
+            <p className="text-xs text-muted-foreground">
+              Acessórios cadastrados
+            </p>
+          </CardContent>
+        </Card>
         
         <Card 
           className="cursor-pointer hover:shadow-lg transition-shadow"
@@ -91,9 +115,9 @@ const Dashboard = () => {
             <AlertTriangle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{alerts.length + lowStockMaterials.length}</div>
+            <div className="text-2xl font-bold">{alerts.length + lowStockMaterials.length + lowStockAccessories.length}</div>
             <p className="text-xs text-muted-foreground">
-              Materiais com estoque baixo
+              Items com estoque baixo
             </p>
           </CardContent>
         </Card>
@@ -145,7 +169,7 @@ const Dashboard = () => {
         <div>
           <h2 className="text-xl font-semibold mb-4">Alertas Recentes</h2>
           <div className="space-y-3">
-            {alerts.slice(0, 5).map((alert) => (
+            {alerts.slice(0, 3).map((alert) => (
               <Card 
                 key={alert.id} 
                 className="border-l-4 border-l-orange-500 cursor-pointer hover:shadow-md transition-shadow"
@@ -159,7 +183,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             ))}
-            {lowStockMaterials.slice(0, 3).map((material) => (
+            {lowStockMaterials.slice(0, 2).map((material) => (
               <Card 
                 key={`low-${material.id}`} 
                 className="border-l-4 border-l-red-500 cursor-pointer hover:shadow-md transition-shadow"
@@ -173,7 +197,21 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             ))}
-            {alerts.length === 0 && lowStockMaterials.length === 0 && (
+            {lowStockAccessories.slice(0, 2).map((accessory) => (
+              <Card 
+                key={`low-acc-${accessory.id}`} 
+                className="border-l-4 border-l-red-500 cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => navigate('/accessories')}
+              >
+                <CardContent className="p-4">
+                  <p className="text-sm text-red-700">
+                    Acessório "{accessory.name}" com estoque baixo: {accessory.current_stock} unidades 
+                    (mínimo: {accessory.minimum_stock} unidades)
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+            {alerts.length === 0 && lowStockMaterials.length === 0 && lowStockAccessories.length === 0 && (
               <Card className="border-dashed">
                 <CardContent className="p-4 text-center text-muted-foreground">
                   Nenhum alerta no momento
