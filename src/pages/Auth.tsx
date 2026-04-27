@@ -96,7 +96,7 @@ const AuthPage = () => {
     } else {
       toast({
         title: "Conta criada com sucesso!",
-        description: "Verifique seu email para confirmar a conta antes de fazer login."
+        description: "Acesse a aba de login para fazer login."
       });
       setSignupForm({email: "", password: "", confirmPassword: "", fullName: ""});
     }
