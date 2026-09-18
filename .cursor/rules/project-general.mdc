@@ -1,0 +1,47 @@
+---
+description: Silver Surf — identidade, fluxo AI-native e fechamento (sempre ativa)
+alwaysApply: true
+---
+
+# Silver Surf Stock Flow
+
+Idioma: **sempre responda em português (pt-BR)**. Copy: nunca travessão "—".
+
+Piloto de gestão de fábrica de pranchas. Constituição: `AGENTS.md`.
+
+## Docs (não carregar todos)
+
+- Contrato do agente: `AGENTS.md`
+- Roadmap: `docs/PLANO.md`
+- Segurança (só se tocar auth/RLS/PII/QR): `docs/SECURITY.md`
+- Estado vivo: `docs/state/ATUAL.md`, `PENDENCIAS.md`, `LESSONS.md`
+- Arquitetura: `docs/manual-dev/01-arquitetura.md`
+
+## Fluxo de feature
+
+1. Sem código no research/plano.
+2. Spec em `specs/` com **Prova** por cenário. Esperar aprovação humana.
+3. Uma spec por sessão. Auto-sizing: small pula design/tasks.
+4. Implementar só a Spec. Paths críticos = autonomia `tight`.
+5. Teste nasce da Spec. Pré-patch deve falhar. Não editar suite legado para ficar verde.
+6. Fechar docs (`close-phase`). Verificar com skill `verifier` (autor ≠ verificador).
+7. Done = comandos do `AGENTS.md` com evidência, não sentimento.
+
+## Fechamento de implementação
+
+Antes de chamar entrega fechada:
+
+1. `docs/implementation/` + índice
+2. `docs/manual-dev/` + índice
+3. `docs/state/PENDENCIAS.md` (código vs homologação)
+
+Skills: `.cursor/skills/close-phase/SKILL.md`, `.cursor/skills/verifier/SKILL.md`.
+
+## Stack e limites
+
+Vite + React + TypeScript + Supabase + Vercel. **Não** migrar para Next sem pedido.
+
+- Sem mocks em dev/prod
+- Sem Playwright no piloto
+- Sem push, merge, deploy, commit ou `.env` sem pedido
+- Migration/schema só com aprovação

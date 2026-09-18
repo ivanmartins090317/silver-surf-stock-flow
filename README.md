@@ -1,3 +1,13 @@
+# Silver Surf Stock Flow
+
+Painel de gestão da fábrica de pranchas (piloto): insumos, receita por modelo, produção com baixa automática, clientes sob encomenda, acessórios.
+
+**Agentes / workflow:** leia `AGENTS.md`. Plano em `docs/PLANO.md`. Manual em `docs/manual-dev/`. Specs em `specs/`.
+
+Origem Lovable abaixo. A stack do produto é Vite + React + TypeScript + Supabase (não Next.js).
+
+---
+
 # Welcome to your Lovable project
 
 ## Project info
