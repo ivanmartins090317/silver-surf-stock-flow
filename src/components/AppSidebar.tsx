@@ -1,7 +1,7 @@
-
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
@@ -9,41 +9,38 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, Box, Users, Shirt } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Logo } from "./Logo";
-
-const menuItems = [
-  {
-    href: "/",
-    label: "Dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    href: "/products",
-    label: "Produtos",
-    icon: Package,
-  },
-  {
-    href: "/materials",
-    label: "Materiais",
-    icon: Box,
-  },
-  {
-    href: "/accessories",
-    label: "Acessórios",
-    icon: Shirt,
-  },
-  {
-    href: "/clients",
-    label: "Clientes",
-    icon: Users,
-  },
-];
+import { appNavItems } from "@/components/app-nav-items";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 export function AppSidebar() {
+  const { isMobile } = useSidebar();
   const location = useLocation();
+  const { signOut } = useAuth();
+  const { toast } = useToast();
+
+  async function handleSignOut() {
+    const { error } = await signOut();
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao sair",
+        description: error.message,
+      });
+      return;
+    }
+
+    toast({
+      title: "Logout realizado com sucesso!",
+    });
+  }
+
+  if (isMobile) return null;
 
   return (
     <Sidebar>
@@ -55,7 +52,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
+              {appNavItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
@@ -72,6 +69,16 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={handleSignOut} tooltip="Sair">
+              <LogOut className="h-4 w-4" />
+              <span>Sair</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -6,9 +6,10 @@ WIP da sessão. Atualizar no research; limpar no Done.
 
 ## Agora
 
-- Feature: F0 harness AI-native (bootstrap)
-- Autonomia: `medium`
-- Status: arquivos do harness no repo. `typecheck` verde. `lint` e `build` ainda vermelhos por legado e falta de env. Aguardando humano ligar o banco e homologar o fluxo.
+- Feature: Dashboard clean com glass Apple (`specs/dashboard-glass.md`) e plano do rollout visual
+- Autonomia: `medium` (Auth `tight` no plano novo)
+- Status: Dashboard em implementação. Plano do glass nas outras telas em `docs/plans/2026-09-18-visual-glass-app.md` (aguardando aprovação). Spec `app-glass` ainda não escrita.
+- Pedido extra da sessão: no mobile o aside vira tab flutuante; o ícone de abrir/fechar fica só no desktop.
 
 ## Não misturar nesta sessão
 
