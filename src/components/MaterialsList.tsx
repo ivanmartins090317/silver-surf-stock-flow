@@ -8,6 +8,7 @@ import { EditMaterialModal } from "@/components/EditMaterialModal";
 import { DeleteConfirmationDialog } from "@/components/DeleteConfirmationDialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { LISTING_EMPTY_CLASS, LISTING_EMPTY_COPY } from "@/lib/app-glass";
 
 interface MaterialsListProps {
   materials: Material[];
@@ -54,9 +55,9 @@ export function MaterialsList({ materials }: MaterialsListProps) {
 
   if (materials.length === 0) {
     return (
-      <div className="p-8 border-2 border-dashed border-border rounded-lg text-center">
+      <div className={LISTING_EMPTY_CLASS}>
         <Box className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h2 className="text-xl font-semibold">Nenhum material cadastrado</h2>
+        <h2 className="text-xl font-semibold">{LISTING_EMPTY_COPY.material}</h2>
         <p className="text-muted-foreground mt-2">
           Adicione as matérias-primas utilizadas na sua produção.
         </p>
@@ -72,7 +73,7 @@ export function MaterialsList({ materials }: MaterialsListProps) {
           const isCritical = material.current_stock <= material.minimum_stock * 0.1;
           
           return (
-            <Card key={material.id} className={isCritical ? "border-red-200" : isLowStock ? "border-orange-200" : ""}>
+            <Card key={material.id} className={isCritical ? "border-red-400/50" : isLowStock ? "border-amber-400/50" : ""}>
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">{material.name}</CardTitle>
@@ -87,7 +88,7 @@ export function MaterialsList({ materials }: MaterialsListProps) {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
                     <span>Estoque atual:</span>
-                    <span className={`font-medium ${isLowStock ? (isCritical ? "text-red-600" : "text-orange-600") : "text-green-600"}`}>
+                    <span className={`font-medium ${isLowStock ? (isCritical ? "text-red-400" : "text-amber-400") : "text-emerald-400"}`}>
                       {material.current_stock} {material.unit}
                     </span>
                   </div>

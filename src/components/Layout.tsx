@@ -6,6 +6,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { APP_ATMOSPHERE_CLASS, APP_SHELL_CLASS } from "@/lib/app-glass";
+import { cn } from "@/lib/utils";
 
 function getProfile(user: User | null) {
   const email = user?.email ?? "";
@@ -48,7 +50,8 @@ export function Layout() {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
-        <main className="min-w-0 w-full flex-1 p-4 pb-24 sm:p-6 md:pb-6 lg:p-8">
+        <main className={cn(APP_SHELL_CLASS, "min-w-0 w-full flex-1 p-4 pb-24 sm:p-6 md:pb-6 lg:p-8")}>
+          <div className={APP_ATMOSPHERE_CLASS} aria-hidden="true" />
           <header className="mb-6 flex items-center gap-3">
             <SidebarTrigger className="hidden shrink-0 md:inline-flex" />
             <div className="ml-auto flex min-w-0 items-center gap-3">

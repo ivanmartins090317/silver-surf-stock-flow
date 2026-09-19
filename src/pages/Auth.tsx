@@ -14,6 +14,12 @@ import {Label} from "@/components/ui/label";
 import {useAuth} from "@/hooks/useAuth";
 import {useToast} from "@/hooks/use-toast";
 import {Loader2} from "lucide-react";
+import {
+  APP_ATMOSPHERE_CLASS,
+  AUTH_HEADING_CLASS,
+  AUTH_LEAD_CLASS,
+  AUTH_SHELL_CLASS,
+} from "@/lib/app-glass";
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -105,11 +111,12 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center bg-gray-50 px-4">
+    <div className={AUTH_SHELL_CLASS}>
+      <div className={APP_ATMOSPHERE_CLASS} aria-hidden="true" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Sistema de Gestão</h1>
-          <p className="text-gray-600 mt-2">Acesse sua conta para continuar</p>
+          <h1 className={AUTH_HEADING_CLASS}>Sistema de Gestão</h1>
+          <p className={AUTH_LEAD_CLASS}>Acesse sua conta para continuar</p>
         </div>
 
         <Tabs defaultValue="login" className="w-full">

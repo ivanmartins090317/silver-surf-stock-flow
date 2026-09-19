@@ -67,8 +67,9 @@ O operador vê o Dashboard com superfícies de vidro sutis, KPIs leves, clientes
 - Então: as superfícies glass ficam opacas, sem blur, e o texto permanece visível
 - Prova: TC-DASH-06. DevTools `prefers-reduced-transparency: reduce`.
 
-### Cenário 7: Sem vazamento visual
+### Cenário 7: Sem vazamento visual (obsoleto)
 
+- Status: **obsoleto** após `specs/2026-09-18-app-glass.md`. A sucessora espalha o vidro e a atmosfera para acesso, Produtos, Materiais, Acessórios e Clientes.
 - Dado: o patch do Dashboard está aplicado
 - Quando: o operador abre Produtos, Materiais, Clientes, Acessórios e Auth
 - Então: essas telas mantêm o visual anterior (sem glass nem atmosfera)

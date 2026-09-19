@@ -27,8 +27,7 @@ const Dashboard = () => {
   const alertCount = alerts.length + lowStockMaterials.length + lowStockAccessories.length;
 
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-atmosphere" aria-hidden="true" />
+    <div>
       <h1 className="mb-6 text-2xl font-semibold tracking-tight sm:text-3xl">Dashboard</h1>
 
       <div className="grid min-w-0 grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-5">

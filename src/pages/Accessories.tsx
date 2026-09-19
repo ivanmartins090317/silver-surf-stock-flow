@@ -4,6 +4,7 @@ import {useAccessories} from "@/hooks/useAccessories";
 import {AccessoriesList} from "@/components/AccessoriesList";
 import {CreateAccessoryModal} from "@/components/CreateAccessoryModal";
 import {useState} from "react";
+import {LISTING_LOADING_CLASS, LISTING_LOADING_COPY} from "@/lib/app-glass";
 
 const AccessoriesPage = () => {
   const {data: accessories = [], isLoading} = useAccessories();
@@ -11,8 +12,8 @@ const AccessoriesPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg">Carregando acessórios...</div>
+      <div className={LISTING_LOADING_CLASS}>
+        {LISTING_LOADING_COPY.acessorio}
       </div>
     );
   }

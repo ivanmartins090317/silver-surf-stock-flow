@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { CARD_SURFACE_CLASS } from "@/lib/app-glass"
 import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
@@ -8,10 +9,7 @@ const Card = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
+    className={cn(CARD_SURFACE_CLASS, className)}
     {...props}
   />
 ))

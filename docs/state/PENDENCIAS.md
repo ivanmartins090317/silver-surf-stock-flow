@@ -63,6 +63,17 @@ Só depois das envs. Spec obrigatória.
 
 ---
 
+## Visual glass (login a Clientes)
+
+Spec: `specs/2026-09-18-app-glass.md`. Código: `docs/implementation/app-glass.md`.
+
+- [x] Código do vidro no casco, Card, acesso e listagens (2026-09-18)
+- [x] `npm run typecheck` / `npm run build` / `npm test` verdes (2026-09-18)
+- [ ] Homologação manual restante: tabela/cartões de Acessórios com item; QR válido; smoke criar/editar/excluir
+- [ ] Diff da tela de acesso (`src/pages/Auth.tsx`) revisado por humano (path crítico, só chrome)
+
+---
+
 ## Dívida técnica transversal
 
 - [ ] `npm run lint` no legado (7 erros: `CreateProductModal`, `ProductionModal`, `useAuth`, `command.tsx`, `textarea.tsx`, `tailwind.config.ts`)
@@ -71,5 +82,5 @@ Só depois das envs. Spec obrigatória.
 - [ ] `CreateProductModal` cria `product_stock` duas vezes
 - [ ] Edição de produto não edita a receita (BOM)
 - [ ] Observações do modal de produção não são gravadas
-- [ ] Sem Vitest (adicionar na primeira Spec que exigir teste)
+- [x] Vitest no repo (domínio puro em `src/lib/app-glass.test.ts`; sem Playwright)
 - [ ] Entrada de compra de insumo (não só CRUD do cadastro)

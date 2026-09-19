@@ -6,6 +6,7 @@ import { useClients, Client } from "@/hooks/useClients";
 import { ClientsList } from "@/components/ClientsList";
 import { CreateClientModal } from "@/components/CreateClientModal";
 import { EditClientModal } from "@/components/EditClientModal";
+import { LISTING_LOADING_CLASS, LISTING_LOADING_COPY } from "@/lib/app-glass";
 
 const ClientsPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -20,8 +21,8 @@ const ClientsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg">Carregando clientes...</div>
+      <div className={LISTING_LOADING_CLASS}>
+        {LISTING_LOADING_COPY.cliente}
       </div>
     );
   }

@@ -5,6 +5,7 @@ import { useMaterials } from "@/hooks/useMaterials";
 import { MaterialsList } from "@/components/MaterialsList";
 import { CreateMaterialModal } from "@/components/CreateMaterialModal";
 import { useState } from "react";
+import { LISTING_LOADING_CLASS, LISTING_LOADING_COPY } from "@/lib/app-glass";
 
 const MaterialsPage = () => {
   const { data: materials = [], isLoading } = useMaterials();
@@ -12,8 +13,8 @@ const MaterialsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg">Carregando materiais...</div>
+      <div className={LISTING_LOADING_CLASS}>
+        {LISTING_LOADING_COPY.material}
       </div>
     );
   }

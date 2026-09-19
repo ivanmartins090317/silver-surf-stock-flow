@@ -17,6 +17,11 @@ import {EditAccessoryModal} from "@/components/EditAccessoryModal";
 import {QRCodeGenerator} from "@/components/QRCodeGenerator";
 import {format} from "date-fns";
 import {ptBR} from "date-fns/locale";
+import {
+  ACCESSORIES_TABLE_SHELL_CLASS,
+  LISTING_EMPTY_CLASS,
+  LISTING_EMPTY_COPY,
+} from "@/lib/app-glass";
 
 interface AccessoriesListProps {
   accessories: Accessory[];
@@ -56,14 +61,14 @@ export function AccessoriesList({accessories}: AccessoriesListProps) {
 
   if (accessories.length === 0) {
     return (
-      <div className="text-center py-8">
-        <p className="text-muted-foreground">Nenhum acessório cadastrado ainda.</p>
+      <div className={LISTING_EMPTY_CLASS}>
+        <p className="text-xl font-semibold text-foreground">{LISTING_EMPTY_COPY.acessorio}</p>
       </div>
     );
   }
 
   const renderTableView = () => (
-    <div className="rounded-md border w-full overflow-x-auto">
+    <div className={ACCESSORIES_TABLE_SHELL_CLASS}>
       <Table className="min-w-full">
         <TableHeader>
           <TableRow>
@@ -148,19 +153,19 @@ export function AccessoriesList({accessories}: AccessoriesListProps) {
           <CardContent className="flex-1 space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="font-medium text-gray-600">Código:</p>
+                <p className="font-medium text-muted-foreground">Código:</p>
                 <p>{accessory.reference_code}</p>
               </div>
               <div>
-                <p className="font-medium text-gray-600">Categoria:</p>
+                <p className="font-medium text-muted-foreground">Categoria:</p>
                 <p>{accessory.category}</p>
               </div>
               <div>
-                <p className="font-medium text-gray-600">Marca:</p>
+                <p className="font-medium text-muted-foreground">Marca:</p>
                 <p>{accessory.brand || "-"}</p>
               </div>
               <div>
-                <p className="font-medium text-gray-600">Estoque:</p>
+                <p className="font-medium text-muted-foreground">Estoque:</p>
                 <p>
                   {accessory.current_stock} / Min: {accessory.minimum_stock}
                 </p>

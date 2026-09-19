@@ -4,6 +4,7 @@ import {useProducts} from "@/hooks/useProducts";
 import {ProductsList} from "@/components/ProductsList";
 import {CreateProductModal} from "@/components/CreateProductModal";
 import {useState} from "react";
+import {LISTING_LOADING_CLASS, LISTING_LOADING_COPY} from "@/lib/app-glass";
 
 const ProductsPage = () => {
   const {data: products = [], isLoading} = useProducts();
@@ -11,8 +12,8 @@ const ProductsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg">Carregando produtos...</div>
+      <div className={LISTING_LOADING_CLASS}>
+        {LISTING_LOADING_COPY.produto}
       </div>
     );
   }

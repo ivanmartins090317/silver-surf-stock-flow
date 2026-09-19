@@ -9,6 +9,7 @@ import { EditProductModal } from "@/components/EditProductModal";
 import { DeleteConfirmationDialog } from "@/components/DeleteConfirmationDialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { LISTING_EMPTY_CLASS, LISTING_EMPTY_COPY } from "@/lib/app-glass";
 
 interface ProductsListProps {
   products: Product[];
@@ -63,9 +64,9 @@ export function ProductsList({ products }: ProductsListProps) {
 
   if (products.length === 0) {
     return (
-      <div className="p-8 border-2 border-dashed border-border rounded-lg text-center">
+      <div className={LISTING_EMPTY_CLASS}>
         <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h2 className="text-xl font-semibold">Nenhum produto cadastrado</h2>
+        <h2 className="text-xl font-semibold">{LISTING_EMPTY_COPY.produto}</h2>
         <p className="text-muted-foreground mt-2">
           Comece cadastrando um novo produto para sua empresa.
         </p>

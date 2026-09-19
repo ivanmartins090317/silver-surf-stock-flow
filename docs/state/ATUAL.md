@@ -6,10 +6,11 @@ WIP da sessão. Atualizar no research; limpar no Done.
 
 ## Agora
 
-- Feature: Dashboard clean com glass Apple (`specs/dashboard-glass.md`) e plano do rollout visual
-- Autonomia: `medium` (Auth `tight` no plano novo)
-- Status: Dashboard em implementação. Plano do glass nas outras telas em `docs/plans/2026-09-18-visual-glass-app.md` (aguardando aprovação). Spec `app-glass` ainda não escrita.
-- Pedido extra da sessão: no mobile o aside vira tab flutuante; o ícone de abrir/fechar fica só no desktop.
+- Feature: visual glass do login a Clientes
+- Autonomia: `medium` no geral; `tight` na tela de acesso
+- Status: código entregue. Docs vivos atualizados. Aguardando skill `verifier` e review humano do diff de `Auth.tsx`.
+- Spec: `specs/2026-09-18-app-glass.md`
+- Homologação parcial no browser da sessão (acesso, listagens, Dashboard, QR inválido, aside, transparência reduzida). Falta tabela/cartões com acessório, QR válido e smoke CRUD.
 
 ## Não misturar nesta sessão
 

@@ -1,11 +1,11 @@
 # Plano: visual glass do login a Clientes
 
-- Status: `aguardando_aprovacao`
+- Status: `aprovado`
 - Data: 2026-09-18
 - Autonomia: `medium` no geral, `tight` em `src/pages/Auth.tsx`
 - Tamanho: `large`
 - Feature: espalhar o visual glass do Dashboard para Auth, Produtos, Materiais, Acessórios e Clientes
-- Spec prevista: `specs/app-glass.md` (ainda não escrita)
+- Spec: `specs/2026-09-18-app-glass.md` (`draft`, aguardando aprovação)
 
 Este arquivo é o plano curto. Sem código até a Spec ser aprovada.
 
@@ -94,6 +94,6 @@ Visual only. Checklist de `docs/SECURITY.md`: N/A justificado, com a regra "não
 
 ## Aprovação
 
-- Plano: aguardando aprovação humana neste arquivo
-- Spec: ainda não escrita
-- Código: proibido até a Spec em `specs/app-glass.md` ser aprovada
+- Plano: aprovado
+- Spec: `specs/2026-09-18-app-glass.md` em `draft`, aguardando aprovação
+- Código: proibido até a Spec ser aprovada

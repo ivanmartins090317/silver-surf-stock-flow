@@ -76,10 +76,12 @@
 }
 
 @layer components {
+  .app-shell,
   .dashboard-page {
     position: relative;
   }
 
+  .app-atmosphere,
   .dashboard-atmosphere {
     position: fixed;
     top: 0;
@@ -95,12 +97,14 @@
   }
 
   @media (min-width: 768px) {
+    .peer[data-state="expanded"] ~ main .app-atmosphere,
     .peer[data-state="expanded"] ~ main .dashboard-atmosphere {
       left: var(--sidebar-width);
     }
   }
 
-  .dashboard-page > :not(.dashboard-atmosphere) {
+  .app-shell > :not(.app-atmosphere):not(.dashboard-atmosphere),
+  .dashboard-page > :not(.app-atmosphere):not(.dashboard-atmosphere) {
     position: relative;
     z-index: 1;
   }
@@ -141,6 +145,7 @@
 }
 
 @media (prefers-reduced-transparency: reduce) {
+  .app-atmosphere,
   .dashboard-atmosphere {
     background: none;
   }
@@ -154,6 +159,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .app-atmosphere,
   .dashboard-atmosphere,
   .glass-kpi {
     transition: none;

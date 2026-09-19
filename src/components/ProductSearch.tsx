@@ -54,11 +54,11 @@ export function ProductSearch({ onProductSelect }: ProductSearchProps) {
         </div>
 
         {showResults && filteredProducts.length > 0 && (
-          <div className="absolute z-10 w-full mt-1 bg-background border rounded-md shadow-lg max-h-60 overflow-y-auto">
+          <Card className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md">
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="p-3 hover:bg-muted cursor-pointer border-b last:border-b-0"
+                className="cursor-pointer border-b p-3 last:border-b-0 hover:bg-muted"
                 onClick={() => handleProductSelect(product)}
               >
                 <div className="flex justify-between items-start">
@@ -96,16 +96,16 @@ export function ProductSearch({ onProductSelect }: ProductSearchProps) {
                 </div>
               </div>
             ))}
-          </div>
+          </Card>
         )}
 
         {showResults && filteredProducts.length === 0 && searchTerm.length > 0 && (
-          <div className="absolute z-10 w-full mt-1 bg-background border rounded-md shadow-lg p-3">
-            <div className="flex items-center gap-2 text-muted-foreground">
+          <Card className="absolute z-10 mt-1 w-full rounded-md">
+            <div className="flex items-center gap-2 p-3 text-muted-foreground">
               <Package className="h-4 w-4" />
               <span className="text-sm">Nenhum produto encontrado</span>
             </div>
-          </div>
+          </Card>
         )}
       </div>
 
