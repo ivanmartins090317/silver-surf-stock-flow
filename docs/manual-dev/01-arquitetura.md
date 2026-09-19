@@ -14,7 +14,7 @@ Visão para quem implementa ou dá manutenção. Stack: **Vite SPA**, não Next.
 
 ---
 
-## Mapa de pastas (legado Lovable)
+## Mapa de pastas (legado)
 
 ```text
 src/

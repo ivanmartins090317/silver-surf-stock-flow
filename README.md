@@ -2,82 +2,35 @@
 
 Painel de gestão da fábrica de pranchas (piloto): insumos, receita por modelo, produção com baixa automática, clientes sob encomenda, acessórios.
 
+**Modernxlab Generated Project.** Stack: Vite + React + TypeScript + Supabase (não Next.js).
+
 **Agentes / workflow:** leia `AGENTS.md`. Plano em `docs/PLANO.md`. Manual em `docs/manual-dev/`. Specs em `specs/`.
 
-Origem Lovable abaixo. A stack do produto é Vite + React + TypeScript + Supabase (não Next.js).
+## Desenvolvimento local
 
----
-
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/d08de343-c519-4a45-959a-9630f30415de
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/d08de343-c519-4a45-959a-9630f30415de) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requisito: Node.js e npm.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+cd silver-surf-stock-flow
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Copie `.env.example` para `.env` e preencha as variáveis do Supabase.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
+## Stack
 
 - Vite
 - TypeScript
 - React
-- shadcn-ui
+- shadcn/ui
 - Tailwind CSS
+- Supabase
+- Vercel
 
-## How can I deploy this project?
+## Deploy
 
-Simply open [Lovable](https://lovable.dev/projects/d08de343-c519-4a45-959a-9630f30415de) and click on Share -> Publish.
+O app é um SPA na Vercel (`vercel.json` com rewrite). Domínio de produção: [silver-surf-stock-flow.vercel.app](https://silver-surf-stock-flow.vercel.app).
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Domínio customizado: Vercel → Project → Settings → Domains.
