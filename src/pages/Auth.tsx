@@ -1,19 +1,9 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {Label} from "@/components/ui/label";
+import * as TabsPrimitive from "@radix-ui/react-tabs";
 import {useAuth} from "@/hooks/useAuth";
 import {useToast} from "@/hooks/use-toast";
-import {Loader2} from "lucide-react";
+import {Loader2, ArrowUpRight, Eye, EyeOff} from "lucide-react";
 import {
   APP_ATMOSPHERE_CLASS,
   AUTH_HEADING_CLASS,
@@ -23,6 +13,9 @@ import {
 
 const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loginForm, setLoginForm] = useState({email: "", password: ""});
   const [signupForm, setSignupForm] = useState({
     email: "",
@@ -115,29 +108,38 @@ const AuthPage = () => {
       <div className={APP_ATMOSPHERE_CLASS} aria-hidden="true" />
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className={AUTH_HEADING_CLASS}>Sistema de Gestão</h1>
+          <h1 className={AUTH_HEADING_CLASS}>Shape stock</h1>
           <p className={AUTH_LEAD_CLASS}>Acesse sua conta para continuar</p>
         </div>
 
-        <Tabs defaultValue="login" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Cadastro</TabsTrigger>
-          </TabsList>
+        <TabsPrimitive.Root defaultValue="login" className="w-full">
+          <TabsPrimitive.List className="auth-tabs-list">
+            <TabsPrimitive.Trigger value="login" className="auth-tab-trigger">
+              Login
+            </TabsPrimitive.Trigger>
+            <TabsPrimitive.Trigger value="signup" className="auth-tab-trigger">
+              Criar nova conta
+            </TabsPrimitive.Trigger>
+          </TabsPrimitive.List>
 
-          <TabsContent value="login">
-            <Card>
-              <CardHeader>
-                <CardTitle>Fazer Login</CardTitle>
-                <CardDescription>Entre com sua conta existente</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
-                    <Input
+          <TabsPrimitive.Content value="login" className="mt-4">
+            <div className="auth-card">
+              <div className="auth-card-header">
+                <h3 className="auth-card-title">Fazer Login</h3>
+                <p className="auth-card-description">
+                  Entre com sua conta existente
+                </p>
+              </div>
+              <div className="auth-card-content">
+                <form onSubmit={handleLogin} className="space-y-5">
+                  <div>
+                    <label htmlFor="login-email" className="auth-label">
+                      Email
+                    </label>
+                    <input
                       id="login-email"
                       type="email"
+                      className="auth-input"
                       placeholder="seu@email.com"
                       value={loginForm.email}
                       onChange={(e) =>
@@ -146,41 +148,73 @@ const AuthPage = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password">Senha</Label>
-                    <Input
-                      id="login-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={loginForm.password}
-                      onChange={(e) =>
-                        setLoginForm((prev) => ({...prev, password: e.target.value}))
-                      }
-                      required
-                    />
+                  <div>
+                    <label htmlFor="login-password" className="auth-label">
+                      Senha
+                    </label>
+                    <div className="auth-input-wrapper">
+                      <input
+                        id="login-password"
+                        type={showLoginPassword ? "text" : "password"}
+                        className="auth-input auth-input-password"
+                        placeholder="••••••••"
+                        value={loginForm.password}
+                        onChange={(e) =>
+                          setLoginForm((prev) => ({...prev, password: e.target.value}))
+                        }
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="auth-password-toggle"
+                        onClick={() => setShowLoginPassword((v) => !v)}
+                        tabIndex={-1}
+                        aria-label={showLoginPassword ? "Ocultar senha" : "Mostrar senha"}
+                      >
+                        {showLoginPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  <button
+                    type="submit"
+                    className="auth-btn"
+                    disabled={isLoading}
+                  >
+                    {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                     Entrar
-                  </Button>
+                    {!isLoading && (
+                      <span className="auth-btn-arrow">
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      </span>
+                    )}
+                  </button>
                 </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
+            </div>
+          </TabsPrimitive.Content>
 
-          <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Criar Conta</CardTitle>
-                <CardDescription>Cadastre-se para acessar o sistema</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Nome Completo</Label>
-                    <Input
+          <TabsPrimitive.Content value="signup" className="mt-4">
+            <div className="auth-card">
+              <div className="auth-card-header">
+                <h3 className="auth-card-title">Criar Conta</h3>
+                <p className="auth-card-description">
+                  Cadastre-se para acessar o sistema
+                </p>
+              </div>
+              <div className="auth-card-content">
+                <form onSubmit={handleSignup} className="space-y-5">
+                  <div>
+                    <label htmlFor="signup-name" className="auth-label">
+                      Nome Completo
+                    </label>
+                    <input
                       id="signup-name"
                       type="text"
+                      className="auth-input"
                       placeholder="Seu nome completo"
                       value={signupForm.fullName}
                       onChange={(e) =>
@@ -189,11 +223,14 @@ const AuthPage = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
+                  <div>
+                    <label htmlFor="signup-email" className="auth-label">
+                      Email
+                    </label>
+                    <input
                       id="signup-email"
                       type="email"
+                      className="auth-input"
                       placeholder="seu@email.com"
                       value={signupForm.email}
                       onChange={(e) =>
@@ -202,47 +239,93 @@ const AuthPage = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Senha</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={signupForm.password}
-                      onChange={(e) =>
-                        setSignupForm((prev) => ({...prev, password: e.target.value}))
-                      }
-                      required
-                    />
+                  <div>
+                    <label htmlFor="signup-password" className="auth-label">
+                      Senha
+                    </label>
+                    <div className="auth-input-wrapper">
+                      <input
+                        id="signup-password"
+                        type={showSignupPassword ? "text" : "password"}
+                        className="auth-input auth-input-password"
+                        placeholder="••••••••"
+                        value={signupForm.password}
+                        onChange={(e) =>
+                          setSignupForm((prev) => ({...prev, password: e.target.value}))
+                        }
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="auth-password-toggle"
+                        onClick={() => setShowSignupPassword((v) => !v)}
+                        tabIndex={-1}
+                        aria-label={showSignupPassword ? "Ocultar senha" : "Mostrar senha"}
+                      >
+                        {showSignupPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-confirm">Confirmar Senha</Label>
-                    <Input
-                      id="signup-confirm"
-                      type="password"
-                      placeholder="••••••••"
-                      value={signupForm.confirmPassword}
-                      onChange={(e) =>
-                        setSignupForm((prev) => ({
-                          ...prev,
-                          confirmPassword: e.target.value
-                        }))
-                      }
-                      required
-                    />
+                  <div>
+                    <label htmlFor="signup-confirm" className="auth-label">
+                      Confirmar Senha
+                    </label>
+                    <div className="auth-input-wrapper">
+                      <input
+                        id="signup-confirm"
+                        type={showConfirmPassword ? "text" : "password"}
+                        className="auth-input auth-input-password"
+                        placeholder="••••••••"
+                        value={signupForm.confirmPassword}
+                        onChange={(e) =>
+                          setSignupForm((prev) => ({
+                            ...prev,
+                            confirmPassword: e.target.value
+                          }))
+                        }
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="auth-password-toggle"
+                        onClick={() => setShowConfirmPassword((v) => !v)}
+                        tabIndex={-1}
+                        aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  <button
+                    type="submit"
+                    className="auth-btn"
+                    disabled={isLoading}
+                  >
+                    {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                     Criar Conta
-                  </Button>
+                    {!isLoading && (
+                      <span className="auth-btn-arrow">
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      </span>
+                    )}
+                  </button>
                 </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </div>
+            </div>
+          </TabsPrimitive.Content>
+        </TabsPrimitive.Root>
       </div>
     </div>
   );
 };
 
 export default AuthPage;
+
